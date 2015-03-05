@@ -1,0 +1,403 @@
+c) Ejemplo 2: clase "gestor de tareas".
+
+- Creación de objeto con malloc.
+- Liberación de objetos con free
+- Impresión por pantalla.
+- Acceso a campos de las estructuras.
+- Ejercicios.
+
+*** Creación de objeto con malloc.
+
+* Punteros y direcciones
+
+- Un puntero es una variable que contiene la direccion de un dato.
+
+- Existen dos tipos de operadores relacionados con memoria:
+	- Operador valor : A partir de una variable tipo puntero
+	nos proporciona el dato apuntado.
+	- Operador dirección: A partir de una variable nos da la
+	direccion de memoria donde se almacena dicha valor.
+
+* Como se declara un puntero
+
+	tipo_de_dato *nombre_variable
+
+	int *valor;
+
+	declara que *valor es un puntero, por tanto valor es un puntero a
+	entero.
+
+* Juquemos con los punteros
+
+	IMAGEN
+
+* Operaciones con punteros
+
+  C permite estas operaciones:
+	- puntero + entero
+	- puntero - entero
+	- puntero = puntero Asignacion entre punteros
+	- puntero = NULL
+	- puntero == NULL Comparacion con NULL
+	- puntero != NULL
+
+* Reserva de memorias
+
+ - En el ejercicio anterior, ¿hemos reservado dicha memoria?.
+
+ - La respuesta es no. La variable de inicio se alberga en una zona de memoria
+   temporal.
+
+ - Heredamos un problema que puede dar la cara en ejecución.
+
+***  Creación de objeto con malloc
+
+ - Para que no nos surja el problema anterior, debemos reservar memoria.
+
+ - Para reservar memoria, libc nos proporciona una función llamada malloc.
+
+* Creación de objetos con malloc
+
+  void *malloc(size_t tamaño);
+
+  - Adjudica espacio para un objeto, cuyo tamaño es especificado por tamanyo y
+    cuyo valor es indeterminado.
+
+  - La función malloc retorna un puntero nulo o un puntero al espacio
+    adjudicado.
+
+* Ejemplo
+
+   int *p;
+
+   p = (int *)malloc(sizeof(int));
+
+** Liberación de objetos con free
+
+ - Siempre que reservamos un espacio en memoria, debemos liberarla.
+
+ - Dicha memoria no liberada recibe el nombre de leak o fuga.
+
+ - Para ello debemos utilizar la función free
+
+* Liberación de objetos con free			(MIRAR EJEMPLO 1)
+
+  void free(void *ptr);
+
+  - La función libera el objeto reservado en la posición correspondiente a ptr.
+
+  - free no devuelve nada.
+
+*** Estructuras
+
+- Una estructura es una coleccion de una o mas variables, no
+necesariamente del mismo tipo, agrupadas bajo un solo
+nombre
+
+- struct nombre_estructura { lista_variables } nombre_variable;
+
+* Declaración de estructuras
+
+ Existen tres formas para declarar una estructura parecida:
+
+a) struct par_numeros {
+	int n;
+	int m;
+   } par1, par2;
+
+* Declaración de estructuras
+
+b) struct par_numeros {
+	int n;
+	int m;
+   };
+
+struct par_numeros p1, p2;
+
+* Declaración de estructuras
+
+c) struct {
+	int n;
+	int n;
+} par1 , par2;
+
+* Operaciones
+
+- copiar estructuras
+- acceso a sus miembros
+- obtener su direccion con &
+- pasarlas como argumentos a funciones
+- ser devueltas por funciones
+- las estructuras no se pueden comparar en sí pero si sus campos.
+
+* Acceder a los miembros de una estructura
+
+- Para acceder a los miembros de una estructura usamos el operador .
+	p1.x=3
+	p1.y=9;
+	p2.x=p2.y=0
+
+- Una estructura puede tener miembros que sean a su vez estructuras
+
+* Punteros a estructuras
+
+- Tambien permite punteros a estructuras.
+
+- La declaracion de un puntero a una estructura es como la de
+un puntero a cualquier otra variable.
+
+* Declaración de punteros a estructuras
+
+  Existe dos formas:
+   - Asignandole la direccion de una variable.
+   - Reservandole memoria con alguna funcion.
+
+* Asignando la dirección de una variable
+
+struct par_numeros {
+	int n;
+	int m;
+};
+
+struct par_numeros p1;
+
+struct par_numeros *p1 = &p1;
+
+* Reservando memoria
+
+struct par_numeros {
+	int n;
+	int m;
+};
+
+struct par_numeros *p1 = (struct par_numeros *)malloc(sizeof(struct nft_table));
+
+* Acceder a los miembros de una estructura
+
+- Para acceder a los miembros de una estructura usamos el operador .
+	p1->n=3
+	p1->m=9;
+
+* Buenos métodos para diseñar buena Api
+
+ - Estructura privada o pública.
+ - Método/función alloc
+ - Método/función free
+ - Uso de flags (is_set)
+ - Método/función get
+ - Método/función unset
+ - Método/función set
+ - Función de impresión
+
+* Estructura pública o privada.
+
+ - Si públicamos una estructura, que expuesta todos los atributos en nuestro
+   programa
+
+ - Por tanto, una modificación de ella será mas complicada porque nuestros
+   usuarios pueden estar utilizandola
+
+ - Por ello la mejor opción es mantenerla privada (definida en el .c)
+
+* Método/función alloc
+
+ - Dicha función nos facilita la reserva en memoria de objetos específicos
+
+ - También puede realizar reserva de memoría de campos internos.
+
+* Método/función free
+
+ - Dicha función realiza la liberación de la estructura en cuestión.
+
+ - También sirve para liberar campos internos los cuales necesiten un
+   tratamiento especial
+
+* Uso de flags (is_set)
+
+ - Los flags es un indicador que añadimos a nuestras estructuras para saber que
+   atributos de ella misma estan activos o no.
+
+ - Esto facilita al desarrollador la prevención de crash por acceso a atributos
+   no inicializados
+
+* Método/función get
+
+ - Función que devuelve los atributos de una estructura
+
+ - En las estructuras existen campos de diversos tipos, para ello se juega con
+   los punteros de tipos no definidos y funciones que realizan casting de ellos.
+
+ - Debemos comprobar si los campos de nuestras estructuras están activos para no
+   tener errores al acceder a campos no inicializados.
+
+* Método/función unset
+
+ - Función que nos permite liberar de forma controlada los atributos.
+
+ - Es usada por la función set antes de asignar un valor nuevo.
+
+* Método/función set
+
+ - Función que nos ayuda a asignar valores a los atributos de una estructura.
+
+ - Nos permite la liberación controlada de atributos y la asignación de nuevos
+
+* Método/función impresión
+
+ - Esta función nos ayuda a depurar fallos en nuestras estructuras
+
+ - Se pueden realizar en diversos formatos como json, xml, formatos
+   personalizados...
+
+* Ejercicios
+
+d)  Ejemplo 4: arrays.
+
+- Declaración
+- Acceso y usos
+
+* Declaración de arrays unidimensionales
+
+  Tipo_dato nombre_array[TAMAÑO] o Tipo_dato nombre_array[]
+
+  char *nombres[] = {"el", "curso", "de", "C", "mola"};
+
+  char *nombres[20];
+
+* Declaración de arrays unidimensionales
+
+ -----------------IMAGEN
+
+* Declaración de arrays unidimensionales
+
+  - Podemos crear arrays de estructuras de datos
+
+  struct coche concesionario[50];
+
+  - O incluso de punteros a estructuras de datos
+
+  struct coche *concesionario[50];
+
+* Declaración de arrays bidimensionales
+
+  int valores[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+
+  - El uso de los arrays bidimensionales se tiene que llevar con cautela, por su
+    coste computacional.
+
+* Declaración de arrays bidimensionales
+
+  -----------IMAGEN
+
+* Declaración de arrays usando la memoria
+
+ int *v;
+ v = (int *)malloc(10 * sizeof(int));
+
+ - Equivalente a
+
+ int v[10];
+
+* Acceso a arrays unidimensionales
+
+ - El acceso a los valores se realiza con un indice, ej:
+	concesionario[0];
+
+	Esto nos devolverá el struct coche comprendido en la posición 0 de
+	nuestro array.
+
+* Acceso a arrays bidimensionales
+
+  - El acceso a los valores se hace a partir de dobles indices, ej:
+	valores[1][1]
+
+	Usando la declaración del array anterior, esa sentencia nos devolvería
+	el número 1.
+
+* ¿Para que usar los arrays?
+
+ - Los arrays son buenos contenedores para información.
+
+ - Nos permite guardar y acceder a ellos con gran facilidad
+
+ - El mayor inconveniente de los arrays es que su tamaño no puede ser modificado
+
+ * Ejercicios
+
+*** Ejemplo 3: errores clásicos y depurando con Valgrind.
+
+ - Segfaults.
+ - Acceso a punteros inválidos
+ - Fugas de memoria
+ - Corrupciones de memoria.
+ - Valgrind: En qué puede ayudarnos.
+
+* errores clásicos y depurando con Valgrind
+
+ - Es común cuando se realiza un programa que tengamos errores típicos.
+
+ - En algunos casos estos errores, nos pueden llevar solucionarlo incluso días
+
+ - Los errores de memoría son los mas frecuentes y los mas complicados de
+   solucionar
+
+ - Es dificil desenmascararlos e incluso acotarlos.
+
+* Segfaults o Fallo de segmentación
+
+ - Se denomina fallo de segmentación al intento fallido de acceso a
+   información o a programas a los que no se tiene autorización para ver
+   o modificar.
+
+ - Son los mas típicos, el S.O. por lo general devuelve la cadena "Violación de
+   segmento" para notificarnoslos
+
+ - Estos fallos rompen la ejecución de nuestros programas.
+
+* Acceso a punteros inválidos
+
+ - La causa de este error, viene por intentar acceder a direcciones de tipo
+   invalidas o nulas.
+
+ - La principal causa de estos errores es el acceso a un puntero el cual ha
+   sido ya liberado.
+
+* Fugas de memoria (memory leaks)
+
+ - La causa de este error es la no liberación de memoria de forma correcta, de
+   memoria que hayamos reservado usando malloc.
+
+ - Una fuga de memoria, es de los mas impredecibles ya que nuestro programa
+   funciona de forma correcta.
+
+ - Con la ejecución el tiempo puede llegar a bloquear o reiniciar maquinas por
+   overflow
+
+* Corrupciones de memoria
+
+ - Ocurre en un programa cuando los contenido de una dirección de memoria
+   involuntariamente se modifican debido a errores de programación; esto se
+   conoce como violación de la seguridad de memoria.
+
+ - Hay que tener mucho cuidado con mantener los punteros intactos...
+
+* Valgrind
+
+- Valgrind es una herramienta que permite detectar fallos en la gestion de
+  memoria
+
+- Errores como los nombrados anteriormente (leaks, segfaults, corrupciones de
+  memoria...)
+
+- Es de las herramientas mas potentes para un buen desarrollador en C
+
+* Como usar Valgrind
+
+  valgrind --leak-check=full --show-reachable=yes nombre_programa
+
+  --leak-check=full : Hace que la herramienta nos muestre las fugas de memoria
+  que tiene nuestro programa
+
+  --show-reachable=yes : Nos muestra un informe detenido
+
+* Ejemplos y ejercicios

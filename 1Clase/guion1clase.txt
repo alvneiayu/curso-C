@@ -1,0 +1,535 @@
+b) Hola mundo
+
+*** compilador GNU cc
+
+- El GNU Compiler Collection (colección de compiladores GNU) es un conjunto de
+compiladores creados por el proyecto GNU.
+
+- GCC es software libre y lo distribuye la Free Software Foundation (FSF)
+
+- La licencia GPL.
+
+* Ejemplos con GCC					EJEMPLO 1
+
+- Compila el programa en C hola.c, genera un archivo ejecutable a.out.
+	gcc hola.c
+
+- Compila el programa en C hola.c, genera un archivo ejecutable hola.
+	gcc -o hola hola.c
+
+- No genera el ejecutable, sino el código objeto, en el archivo hola.o. Si
+  no se indica un nombre para el archivo objeto, usa el nombre del archivo
+  en C y le cambia la extensión por .o.v
+	gcc -c holamundo.c
+
+- Genera el código objeto indicando el nombre de archivo.
+	gcc -c -o holamundo.o holamundo.c
+
+- Indica dos directorios donde han de buscarse bibliotecas. La
+  opción -L debe repetirse para cada directorio de búsqueda de
+  bibliotecas.ndica dos directorios donde han de buscarse bibliotecas. La
+  opción -L debe repetirse para cada directorio de búsqueda de bibliotecas.
+	gcc -L/lib -L/usr/lib holamundo.c
+
+- Indica un directorio para buscar archivos de encabezado (de extensión .h).
+	gcc -I/usr/include holamundo.c
+
+***  Los #includes				EJEMPLO 2
+
+- Es una palabra clave que hace referencia a una instrucción al preprocesador
+
+- De forma genérica se usa para adicionar un archivo al código
+
+- Se pueden incluir desde bibliotecas externas a cabeceras generadas por
+  nosotros mismos.
+
+*** Libc
+
+- La biblioteca estándar de C (también conocida como libc)
+
+- Es una recopilación de ficheros cabecera y bibliotecas, estandarizadas por un comité
+  de la Organización Internacional para la Estandarización (ISO)
+
+- Implementan operaciones comunes, tales como las de entrada y salida o el
+  manejo de cadenas
+
+* Ejemplo bibliotecas comprendidas en Libc			EJEMPLO 3
+
+- <stdio.h> 	Proporciona el núcleo de las capacidades de entrada/salida del
+  lenguaje C.
+
+- <stdint.h> 	Para definir varios tipos enteros (nuevo en C99).
+
+
+- <stdlib.h> Contiene los prototipos de funciones de C para gestión de memoria
+  dinámica, control de procesos y otras.
+
+- <errno.h> 	Para analizar los códigos de error devueltos por las funciones
+  de biblioteca.
+
+- <assert.h> 	Contiene la macro assert (aserción), utilizada para detectar
+  errores lógicos y otros tipos de fallos en la depuración de un programa.
+
+************************** VARIABLES Y CODING STYLE **************************
+
+**** Tipos de datos
+
+- Entero
+	int numero = 0;
+
+- Enteros sin signo
+	uint32_t numero = 0;
+
+- Real (Biblioteca float.h)
+	float numero=12.2;
+
+- Carácter
+	char letra = 'a';
+
+- Cadena de carácter
+	char palabra[10] = “HOLA”;
+
+* Definición de variables
+
+- Variables locales
+	Variables que solo se pueden utilizar en el interior (en el contexto)
+	de una función.
+
+	void hola()
+	{
+		int i = 0;
+
+		...
+	}
+
+- Variables globales
+	Variables que se pueden utilizar en el contexto completo de un fichero.
+
+	int i;
+
+	void hola()
+	{
+		printf("valor de i = %d\n", i);
+	}
+
+	void aumentar()
+	{
+		i++;
+	}
+
+* Coding style variables
+
+	Tipo Nombre;
+
+	int numero;
+
+	Tipo Nombre = valor;
+
+	int numero = 0;
+
+Guardar un espacio entre el nombre y el igual y entre el igual y el valor.
+
+*** Operadores
+
+- Aritméticos
+
+	+ suma
+	- resta
+	* multiplicacion
+	/ division. Si los operandos son enteros la division es entera
+	% Modulo
+
+- De relacion
+
+	< menor que
+	<= menor o igual que
+	> mayor que
+	>= mayor o igual que
+	== igual a
+	!= distinto
+
+- Lógicos
+	&& AND
+	|| OR
+	! NOT
+
+*** if statement					EJEMPLO 4
+
+- Se trata de una estructura de control que permite realizar una acción
+  según la evaluación de una condición simple, sea falsa o verdadera.
+
+	if (condicion) {
+		BLOQUE 1
+	} else {
+		BLOQUE 2
+	}
+
+ Si la condición es verdadera, se ejecuta el bloque de sentencias 1, de lo
+ contrario, se ejecuta el bloque de sentencias 2.
+
+	if (condicion1) {
+		BLOQUE 1
+	} else if (condicion2) {
+		BLOQUE 2
+	} else {
+		BLOQUE 3
+	}
+
+ Si la condición1 es verdadera, se ejecuta el bloque de sentencias 1. Si la
+ condicion2 es verdadera, se ejecuta el bloque de sentencias 2. De lo contrario,
+ se ejecuta el bloque de sentencia 3.
+
+* Coding style
+
+	if (CONDICION) {
+		BLOQUE1
+	} else if (CONDICION) {
+		...
+	} else {
+		...
+	}
+
+- Espacio entre el if y el parentesis que contiene la condicion
+- Espacio entre el parentesis y la apertura de llave {.
+- Código siempre tabulado un espacio mas del propio if. En el ejemplo el if
+  tiene una tabulación, por tanto todo el BLOQUE1 debe estar con dos
+  tabulaciones.
+- Si nuestro bloque solo tiene una sentencia o línea, no es necesario apertura
+  de llaves y cierre. Ej:
+
+	int numero = 0;
+
+  	if (numero == 0)
+		printf("Es cero\n");
+	else
+		printf("No es cero\n");
+
+*** Switch						EJEMPLO 5
+
+- Permite tomar una decision multiple basada en una expresion que puede tomar
+  un numero de valores constantes enteros.
+
+	switch (expresion) {
+	case constante1:
+		...
+		break;
+	case constante2:
+		...
+		break;
+	default:
+		...
+		break;
+	}
+
+- El valor de expresion se va comparando con las constantes por orden y una vez
+  que coincide con una de ellas se ejecutan todas las sentencias (incluidas las
+  de los cases siguientes) hasta que se encuentra la sentencia break
+
+	int i = 0;
+
+	switch (i) {
+	case 0: // Si i == 0, entonces ejecutamos este codigo
+		printf("es igual a 0\n");
+		break;
+	case 1:
+	case 2:
+		printf("no es igual a 0\n");
+		break;
+	default:
+	}
+
+¿Y si no ponemos el break?
+ Si no colocamos la sentencia break, el código continua la ejecución ejemplo:
+
+ 	switch (i) {
+	case 0:
+		printf("es cero\n"); // mensaje 1
+	case 1:
+		printf("es uno\n");  // mensaje 2
+		break;
+	default:
+		printf("no es ni 0 ni 1\n");
+	}
+
+Si i es igual a 0 imprimiremos tanto el mensaje 1 como el mensaje 2.
+
+* Coding style
+
+	switch (expresion) {
+	case valor1:
+		BLOQUE1
+	case valor2:
+		...
+	default:
+		...
+	}
+
+- Guardar un espacio entre la palabra switch y el parentesis
+- Guardar espacio entre el parentesis de la expresión y la apertura de llave {
+- Cada "case" debe tener las mismas tabulaciones que la declaración del switch.
+- El bloque de código debe tener una tabulación mas que la de nuestro case o
+  switch.
+
+IMPORTANTE: NO OLVIDAR LOS BREAKS.
+
+*** bucle while							EJEMPLO 6
+
+	while (condicion)
+		sentencia
+
+- Se evalua expresion, y si es distinta de 0 se ejecuta sentencia.
+- Sentencia debe estar terminada por ;
+- Sentencia puede ser un bloque se sentencias entre llaves
+
+	int i = 0;
+
+	while (i < 0) {
+		printf("Valor de i %d\n");
+		i++;
+	}
+
+* Coding style
+
+	int i = 0;
+
+	while (expresion) {
+		BLOQUE
+	}
+
+- Mantener un espacio entre la palabra while y el espacio que contiene la
+  condición
+- Mantener un espacio entre el parentesis que contiene la condición y la
+  apertura de llave {
+- El bloque debe de tener una tabulación mas que la de while.
+
+*** bucle for							EJEMPLO 7
+
+	for (expr1; expr2; expr3)
+		sentencia
+
+- Se evalua el valor de expr1 en la expr2. En caso negativo se actualiza el valor de
+  expr1 a partir de expr3 y ejecuta la sentencia. Ej:
+
+	int i;
+
+	for (i = 0; i < 4; i++)
+		printf("hola\n");
+
+Este bucle for sería igual a:
+
+	int i = 0;
+
+	while (i < 4) {
+		printf("hola\n");
+		i++;
+	}
+
+* Coding style
+
+	for (expr1; expr2; expr3) {
+		BLOQUE
+	}
+
+- Mantener un espacio entre la palabra for y el espacio que contiene la
+  condición
+- Mantener un espacio entre el parentesis que contiene la condición y la
+  apertura de llave {
+- El bloque debe de tener una tabulación mas que la de for
+- Se debe guardar un espacio entre cada ';' y cada expresion
+
+
+*** Salidas de los bucles
+
+C proporciona dos modos de salida de los bucles:
+
+- break: Provoca la salida del bucle. Si hay varios bucles anidados
+  provoca la salida de aquel donde se encuentra
+
+- continue
+  Provoca la salida de la presente iteracion del bucle. Se vuelve
+  a la condicion.
+
+
+	int i;
+	char cadena[30] = "hola amigos\n";
+
+	for (i = 1; i < 30; i++) {
+		if (cadena[i] != 's')
+			continue;
+		printf("la posicion de s es %d\n", i);
+		break;
+	}
+
+- Otra forma de realizar una salida es usando la sentencia return.
+
+*** goto y etiquetas						EJEMPLO 8
+
+- Una etiqueta tiene el mismo formato que un nombre de variable, seguida de
+  dos puntos
+
+- Debe estar en la misma funcion en donde se encuentra el goto
+
+	int i = 1000)
+
+	if (i == 1000)
+		goto mil:
+
+	printf("no es igual a mil\n");
+	return 0;
+mil:
+	printf("es igual a mil\n");
+	return 1;
+
+*** Introducción a funciones
+
+- Un programa e C es una coleccion de funciones.
+
+- Una de esas funciones se llama main y es la primera en ejecutarse
+
+- Las funciones pueden residir en uno o varios ficheros fuente
+
+*** Definición y uso				EJERCICIOS 9
+
+- Cada funcion tiene la forma:
+
+tipo_de_dato nombre_funcion (argumentos)
+{
+declaraciones y sentencias
+}
+
+En el tipo de dato debemos poner el tipo de devolución que queremos recibir de
+dicha función. Si queremos devolver un numero entero nos quedaría:
+
+int nombre_funcion (argumentos)
+{
+	declaraciones y sentencias
+}
+
+Tipos de datos que podemos usar:
+
+	int : Entero
+	uint32_t, uint16_t, uint8_t: Enteros sin signo
+	char : Caracter
+	char * : Puntero a una cadena de caracteres
+	void : La función no devuelve nada
+	void * : Puntero a un objeto no definido.
+
+- Cuando una funcion no lleva parametros o no devuelve ningun valor se usa void
+	void nombre_funcion(void)
+
+* Funciones estáticas
+
+- Cuando definimos una función como estática en C, lo que realmente estamos
+  haciendo es limitar a que solo las funciones que están definidas en el mismo
+  archivo que la función estática puedan llamarla a ésta. Para verlo más claro,
+  veamos los siguientes archivos:
+
+  static tipo_de_dato nombre_funcion(argumentos) {
+	declaraciones y sentencias
+  }
+
+* Cabeceras
+
+- Lo ficheros llamados cabeceras, son ficheros del tipo .h. En ellos declaramos
+  las funciones, las cuales queremos que puedan ser utilizadas en otros
+  ficheros.
+
+  fichero util.h
+	int es_una_A(char letra);
+
+  fichero util.c
+  	int es_una_A(char letra) {
+		...
+	}
+
+  fichero prog.c
+	#include "util.h"
+
+	void main()
+	{
+		...
+		if (es_una_A(cadena[i]))
+			...
+		...
+	}
+
+*** Compilando y configurando con autoconf y automake
+
+- En nuestros ejercicios hemos compilado los ficheros con gcc. Debido a que la
+  cantidad de ficheros no es grande.
+
+- Cuando realizamos un proyecto y en él tenemos cantidades grandes de código y
+  muchos fichero esto se vuelve inviable.
+
+- Para usar estas herramientas necesitamos tener instalado autoconf.
+
+- Los pasos a seguir para integrar estas herramientas en nuestro proyecto:
+
+1) Creamos un fichero configure.ac en la carpeta principal del proyecto.
+
+2) En ese fichero escribimos la linea:
+
+	AC_INIT(NOMBREDELPROYECTO, VERSION, CORREO)
+
+   Esta sentencia nos inicializa el proyecto. Por ello, cerramos y guardamos
+   el fichero.
+
+3) Ejecutamos autoconf. Este comando nos creará una carpeta llamada
+autom4te.cache y el ejecutable configure.
+
+4) Pasamos a crear el fichero Makefile.am en la carpeta principal. En el debemos
+escribir estos comandos.
+
+	AUTOMAKE_OPTIONS = foreign
+	SUBDIRS = src
+
+La primera linea lo que establece es que nuestro programa no es de GNU por tanto
+"foreign". La segunda linea debemos establecer cada uno de los subdirectorios
+que contiene nuestro proyecto. En este caso solo tenemos src.
+
+5) Crear el fichero Makefile.am dentro de src. Con la informacion
+correspondiente:
+
+	bin_PROGRAMS = holaclase
+	holaclase_SOURCES = holaclase.c
+
+La segunda linea decimos que queremos que nos compile el fichero holaclase.c.
+Con la primera linea decimos que nos genere el binario/ejecutable a partir del
+holaclase_SOURCES.
+
+6) Continuamos con la configuración de nuestro fichero configure.ac. En el como
+sentencias principales a escribir serían:
+
+	/* Nos inicia el proyecto usando automake */
+	AM_INIT_AUTOMAKE(holaclase, 1.0)
+	/* Designamos en que carpeta tenemos el código del programa principal */
+	AC_CONFIG_SRCDIR([src/holaclase.c])
+	/* Designamos donde deben generarse nuestros ficheros Makefile.
+	AC_OUTPUT(Makefile src/Makefile)
+
+Podemos añadir muchas comprobaciones mas, ver fichero de EJEMPLO 11.
+
+7) Ejecutamos:
+	aclocal
+
+Este comando nos general un fichero de nombre aclocal.m4. Este fichero
+contiene todas los comandos de Makefile por ejemplo AM_INIT_AUTOMAKE.
+
+8) Ejecutamos:
+	automake --add-missing
+
+automake lee los ficheros configure.ac y los Makefile.am y los interpreta.
+Genera unos ficheros llamados Makefile.in. Si existe algún error o algo mal
+escrito. En este paso se nos informa
+
+9) Como último paso ejecutamos de nuevo autoconf. Esto nos generará un configure
+el cual tendrá en cuenta todo las nuevas comprobaciones y nuestros ficheros
+Makefile.am
+
+10) Ejecutamos:
+	./configure
+
+11) Compilamos el programa usando
+	make
+
+12) Entramos en la carpeta src y veremos nuestro programa "holaclase".
